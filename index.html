@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css" />
+	<title>Sorting Algorithm Visualizer</title>
+</head>
+
+<body>
+	<canvas id="canvas"></canvas>
+	<div class="monitor">
+		<h1 id="algName"></h1>
+		<h3 id="timeElapsed"></h3>
+	</div>
+	<div class="menu">
+		<label for="algorithmsSelect">Algorithm</label>
+		<select class="setting" id="algorithmsSelect">
+		</select>
+		<label for="speed">Speed</label>
+		<input class="setting" type="range" id="speed" min="1" max="200" value="200" />
+		<label for="n">Number of Elements</label>
+		<input class="setting" type="range" id="n" min="10" max="10000" value="100" />
+		<button onclick="start()">Start!</button>
+	</div>
+	<script src="index.js"></script>
+</body>
+
+</html>

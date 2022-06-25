@@ -50,6 +50,7 @@ let n = nInput.value,
 let arr = [],
     algs = {
         'Bubble Sort': BubbleSort,
+        'Cocktail Shaker Sort': CocktailSort,
         'Selection Sort': SelectionSort,
         'Merge Sort': MergeSort,
     },
@@ -193,10 +194,44 @@ async function BubbleSort() {
     }
 }
 
+async function CocktailSort() {
+    for (let i = 0; i < n - 1; ++i) {
+        let done = true;
+
+        for (let j = 0; j < n - i - 1; ++j) {
+            if (arr[j] > arr[j + 1]) {
+                let temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+
+                done = false;
+                await wait(speedInput.max - speedInput.value);
+            }
+
+            highlight = j;
+        }
+
+        for (let j = n - 1; j > i; --j) {
+            if (arr[j] < arr[j - 1]) {
+                let temp = arr[j];
+                arr[j] = arr[j - 1];
+                arr[j - 1] = temp;
+
+                done = false;
+                await wait(speedInput.max - speedInput.value);
+            }
+
+            highlight = j;
+        }
+
+        if (done) return;
+    }
+}
+
 async function SelectionSort() {
     let iMin;
 
-    for (let i = 0; i < n; ++i) {
+    for (let i = 1; i < n; ++i) {
         iMin = i;
 
         for (let j = i; j < n; ++j) if (arr[j] < arr[iMin]) iMin = j;

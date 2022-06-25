@@ -6,15 +6,26 @@ const ctx = canvas.getContext('2d');
 let audioCtx;
 /** @type {OscillatorNode} */
 let oscillator;
+/** @type {GainNode} */
+let gainNode;
 
 /** @type {HTMLSelectElement} */
-let algorithmsSelect = document.getElementById('algorithmsSelect');
+let algorithmsSelect = document.getElementById('algorithms');
 
 /** @type {HTMLInputElement} */
 let speedInput = document.getElementById('speed');
 
 /** @type {HTMLInputElement} */
 let nInput = document.getElementById('n');
+
+/** @type {HTMLInputElement} */
+let volumeInput = document.getElementById('volume');
+
+/** @type {HTMLSelectElement} */
+let soundTypeInput = document.getElementById('soundType');
+
+/** @type {HTMLButtonElement} */
+let startBtn = document.getElementById('startBtn');
 
 /** @type {HTMLHeadingElement} */
 let algNameElem = document.getElementById('algName');
@@ -52,18 +63,22 @@ for (let alg of Object.keys(algs)) {
 }
 
 init();
-setInterval(draw, 1000 / 60);
+setInterval(frame, 1000 / 60);
 
+// click canvas to randomize
 canvas.onclick = function () {
     if (isRunning) return;
     init();
 };
 
+// press start button or space to start
 window.onkeydown = function (ev) {
     if (isRunning) return;
 
     if (ev.key === ' ') start();
 };
+
+startBtn.onclick = start;
 
 function init() {
     n = nInput.value;
@@ -79,22 +94,25 @@ function init() {
         [arr[i], arr[j]] = [arr[j], arr[i]];
     }
 
-    draw();
+    frame();
     timeElapsedElem.textContent = '0 ms';
 }
 
 async function start() {
     if (isRunning) return;
 
-    isRunning = true;
-
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    gainNode = audioCtx.createGain();
+    gainNode.connect(audioCtx.destination);
+    gainNode.gain.value = volumeInput.value;
+
     oscillator = audioCtx.createOscillator();
     oscillator.type = 'square';
+    oscillator.connect(gainNode);
     oscillator.start();
 
-    oscillator.connect(audioCtx.destination);
-
+    isRunning = true;
     startTime = performance.now();
 
     let algName =
@@ -104,7 +122,7 @@ async function start() {
     algNameElem.textContent = algName;
 
     await algs[algName]();
-    draw();
+    frame();
     oscillator.disconnect();
     isRunning = false;
 }
@@ -114,12 +132,20 @@ function wait(ms) {
 }
 
 function playSound(i) {
-    let freq = (i / n) * (MAX_FREQ - MIN_FREQ) + MIN_FREQ;
+    let freq;
+    if (soundTypeInput.selectedIndex === 0) {
+        // index
+        freq = (i / n) * (MAX_FREQ - MIN_FREQ) + MIN_FREQ;
+    } else {
+        //value
+        freq = (arr[i] / n) * (MAX_FREQ - MIN_FREQ) + MIN_FREQ;
+    }
 
+    gainNode.gain.value = volumeInput.value;
     oscillator.frequency.setValueAtTime(freq, audioCtx.currentTime);
 }
 
-function draw() {
+function frame() {
     if (isRunning) {
         playSound(highlight);
         let timeElapsed = Math.floor(performance.now() - startTime);

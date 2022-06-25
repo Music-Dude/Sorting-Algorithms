@@ -16,14 +16,22 @@
 		<h3 id="timeElapsed"></h3>
 	</div>
 	<div class="menu">
-		<label for="algorithmsSelect">Algorithm</label>
-		<select class="setting" id="algorithmsSelect">
+		<label for="algorithms">Algorithm</label>
+		<select class="setting" id="algorithms">
 		</select>
 		<label for="speed">Speed</label>
 		<input class="setting" type="range" id="speed" min="1" max="200" value="200" />
 		<label for="n">Number of Elements</label>
 		<input class="setting" type="range" id="n" min="10" max="10000" value="100" />
-		<button onclick="start()">Start!</button>
+		<label for="volume">Sound Volume</label>
+		<input class="setting" type="range" id="volume" min="0" max="1" value="1" step="0.01" />
+		<label for="soundType">Sound Type</label>
+		<select class="setting" id="soundType">
+			<option>Highlighted index</option>
+			<option>Highlighted value</option>
+		</select>
+		<button id="startBtn">Start!</button>
+
 	</div>
 	<script src="index.js"></script>
 </body>

@@ -78,6 +78,11 @@ window.onkeydown = function (ev) {
     if (ev.key === ' ') start();
 };
 
+window.onresize = function (ev) {
+    canvas.width = ev.target.innerWidth;
+    canvas.height = ev.target.innerHeight;
+};
+
 startBtn.onclick = start;
 
 function init() {
@@ -148,11 +153,11 @@ function playSound(i) {
 function frame() {
     if (isRunning) {
         playSound(highlight);
-        let timeElapsed = Math.floor(performance.now() - startTime);
+        let timeElapsed = Math.round(performance.now() - startTime);
 
         if (!isNaN(timeElapsed)) {
             timeElapsedElem.textContent =
-                Math.floor(performance.now() - startTime) + ' ms';
+                Math.round(performance.now() - startTime) + ' ms';
         }
     }
 
@@ -163,10 +168,11 @@ function frame() {
         if (i === highlight) ctx.fillStyle = COLORS.HIGHLIGHT;
         else ctx.fillStyle = COLORS.FG;
 
+        let w = canvas.width / n;
         ctx.fillRect(
-            i * (canvas.width / n),
+            i * w,
             canvas.height - arr[i] * (canvas.height / n),
-            canvas.width / n,
+            Math.ceil(w),
             arr[i] * (canvas.height / n)
         );
     }

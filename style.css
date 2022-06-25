@@ -27,6 +27,8 @@ body {
 }
 
 .menu {
+	display: flex;
+	flex-direction: column;
 	height: 100%;
 	width: 20%;
 	padding: 10px;
@@ -49,4 +51,9 @@ body {
 	height: 2em;
 	font-size: 0.8em;
 	margin-bottom: 2em;
+}
+
+.menu #startBtn {
+	margin-top: auto;
+	height: 3em;
 }

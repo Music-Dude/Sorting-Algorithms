@@ -45,12 +45,13 @@ const COLORS = {
     MAX_FREQ = 880;
 
 let n = nInput.value,
-    highlight = 0;
+    highlight = null;
 
 let arr = [],
     algs = {
         'Bubble Sort': BubbleSort,
         'Cocktail Shaker Sort': CocktailSort,
+        'Insertion Sort': InsertionSort,
         'Selection Sort': SelectionSort,
         'Merge Sort': MergeSort,
     },
@@ -131,6 +132,7 @@ async function start() {
     frame();
     oscillator.disconnect();
     isRunning = false;
+    highlight = null;
 }
 
 function wait(ms) {
@@ -228,10 +230,27 @@ async function CocktailSort() {
     }
 }
 
+async function InsertionSort() {
+    for (let i = 1; i < n; ++i) {
+        let j = i - 1;
+
+        let temp = arr[i];
+        while (j >= 0 && arr[j] > temp) {
+            arr[j + 1] = arr[j];
+
+            highlight = j;
+            --j;
+        }
+        arr[j + 1] = temp;
+
+        await wait(speedInput.max - speedInput.value);
+    }
+}
+
 async function SelectionSort() {
     let iMin;
 
-    for (let i = 1; i < n; ++i) {
+    for (let i = 0; i < n; ++i) {
         iMin = i;
 
         for (let j = i; j < n; ++j) if (arr[j] < arr[iMin]) iMin = j;

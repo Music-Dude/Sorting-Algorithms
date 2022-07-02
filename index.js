@@ -53,6 +53,7 @@ let arr = [],
         'Cocktail Shaker Sort': CocktailSort,
         'Insertion Sort': InsertionSort,
         'Selection Sort': SelectionSort,
+        'Heap Sort': HeapSort,
         'Merge Sort': MergeSort,
     },
     isRunning = false,
@@ -263,6 +264,44 @@ async function SelectionSort() {
 
         highlight = iMin;
         await wait(speedInput.max - speedInput.value);
+    }
+}
+
+async function HeapSort() {
+    // start at first layer with children, convert array to heap
+    for (let i = Math.floor(n / 2 - 1); i >= 0; --i) await heapify(n, i);
+
+    for (let i = n - 1; i > 0; --i) {
+        let temp = arr[i];
+        arr[i] = arr[0];
+        arr[0] = temp;
+
+        highlight = i;
+        await wait(speedInput.max - speedInput.value);
+
+        await heapify(i, 0);
+    }
+}
+
+async function heapify(size, root) {
+    let largest = root,
+        left = root * 2 + 1,
+        right = left + 1;
+
+    if (left < size && arr[left] > arr[largest]) largest = left;
+    if (right < size && arr[right] > arr[largest]) largest = right;
+
+    // keep sorting sub-trees if a child was larger than the root
+    if (largest !== root) {
+        // swap root with larger child
+        let temp = arr[root];
+        arr[root] = arr[largest];
+        arr[largest] = temp;
+
+        highlight = largest;
+        await wait(speedInput.max - speedInput.value);
+
+        await heapify(size, largest);
     }
 }
 

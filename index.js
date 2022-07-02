@@ -182,13 +182,17 @@ function frame() {
     }
 }
 
+async function swap(i, j) {
+    let temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
+
 async function BubbleSort() {
     for (let i = 0; i < n - 1; ++i) {
         for (let j = 0; j < n - i - 1; ++j) {
             if (arr[j] > arr[j + 1]) {
-                let temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
+                swap(j, j + 1);
             }
 
             highlight = j;
@@ -203,9 +207,7 @@ async function CocktailSort() {
 
         for (let j = 0; j < n - i - 1; ++j) {
             if (arr[j] > arr[j + 1]) {
-                let temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
+                swap(j, j + 1);
 
                 done = false;
                 await wait(speedInput.max - speedInput.value);
@@ -216,9 +218,7 @@ async function CocktailSort() {
 
         for (let j = n - 1; j > i; --j) {
             if (arr[j] < arr[j - 1]) {
-                let temp = arr[j];
-                arr[j] = arr[j - 1];
-                arr[j - 1] = temp;
+                swap(j, j - 1);
 
                 done = false;
                 await wait(speedInput.max - speedInput.value);
@@ -257,9 +257,7 @@ async function SelectionSort() {
         for (let j = i; j < n; ++j) if (arr[j] < arr[iMin]) iMin = j;
 
         if (iMin != i) {
-            let temp = arr[i];
-            arr[i] = arr[iMin];
-            arr[iMin] = temp;
+            swap(i, iMin);
         }
 
         highlight = iMin;
@@ -272,9 +270,7 @@ async function HeapSort() {
     for (let i = Math.floor(n / 2 - 1); i >= 0; --i) await heapify(n, i);
 
     for (let i = n - 1; i > 0; --i) {
-        let temp = arr[i];
-        arr[i] = arr[0];
-        arr[0] = temp;
+        swap(i, 0);
 
         highlight = i;
         await wait(speedInput.max - speedInput.value);
@@ -293,10 +289,7 @@ async function heapify(size, root) {
 
     // keep sorting sub-trees if a child was larger than the root
     if (largest !== root) {
-        // swap root with larger child
-        let temp = arr[root];
-        arr[root] = arr[largest];
-        arr[largest] = temp;
+        swap(root, largest);
 
         highlight = largest;
         await wait(speedInput.max - speedInput.value);

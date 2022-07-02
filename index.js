@@ -182,7 +182,7 @@ function frame() {
     }
 }
 
-async function swap(i, j) {
+function swap(i, j) {
     let temp = arr[i];
     arr[i] = arr[j];
     arr[j] = temp;

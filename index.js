@@ -102,8 +102,8 @@ function init() {
         [arr[i], arr[j]] = [arr[j], arr[i]];
     }
 
-    frame();
-    timeElapsedElem.textContent = '0 ms';
+    algNameElem.textContent = '';
+    timeElapsedElem.textContent = '';
 }
 
 async function start() {
@@ -130,7 +130,6 @@ async function start() {
     algNameElem.textContent = algName;
 
     await algs[algName]();
-    frame();
     oscillator.disconnect();
     isRunning = false;
     highlight = null;
@@ -157,11 +156,10 @@ function playSound(i) {
 function frame() {
     if (isRunning) {
         playSound(highlight);
-        let timeElapsed = Math.round(performance.now() - startTime);
+        let timeElapsed = performance.now() - startTime;
 
         if (!isNaN(timeElapsed)) {
-            timeElapsedElem.textContent =
-                Math.round(performance.now() - startTime) + ' ms';
+            timeElapsedElem.textContent = Math.round(timeElapsed) + ' ms';
         }
     }
 
